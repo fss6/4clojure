@@ -1,21 +1,13 @@
-(ns for_clojure.30)
+(ns for_clojure.31)
 
-(defn compress-a-sequence
-  "Write a function which removes consecutive duplicates from a sequence.
-  https://4clojure.oxal.org/#/problem/30"
-  ([entry] (compress-a-sequence entry []))
-  ([entry, result]
-   (if (empty? entry)
-     (apply list result)
-     (let [first-item   (first entry)
-           last-item    (last result)
-           item-equals? (= first-item last-item)
-           new-result   (conj result first-item)]
-       (recur (rest entry) (if item-equals? result new-result))))))
+(defn packs-consecutive-duplicates
+  "Write a function which packs consecutive duplicates into sub-lists.
+  https://4clojure.oxal.org/#/problem/31"
+  [coll]
+  (partition-by identity coll))
 
+(println (= (packs-consecutive-duplicates [1 1 2 1 1 1 3 3]) '((1 1) (2) (1 1 1) (3 3))))
 
-(println (= (apply str (compress-a-sequence "Leeeeeerrroyyy")) "Leroy"))
+(println (= (packs-consecutive-duplicates [:a :a :b :b :c]) '((:a :a) (:b :b) (:c))))
 
-(println (= (compress-a-sequence [1 1 2 3 3 2 2 3]) '(1 2 3 2 3)))
-
-(println (= (compress-a-sequence [[1 2] [1 2] [3 4] [1 2]]) '([1 2] [3 4] [1 2])))
+(println (= (packs-consecutive-duplicates [[1 2] [1 2] [3 4]]) '(([1 2] [1 2]) ([3 4]))))
